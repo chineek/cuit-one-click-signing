@@ -18,7 +18,6 @@ print("Config: ", cfgData)
 common = {'codeKey': ''}
 ssion = requests.session()
 
-
 # 正则取值
 def find_by_reg(reg, content):
     p = re.compile(reg)
@@ -57,15 +56,16 @@ def yzm_get():
     file.close()
 
     # 3. 使用操作系统打开验证码图片
-    user_platform = platform.system()
-    yzm_image = 'yzmImage.bmp'
-    if user_platform == 'Darwin':
-        os.subprocess.call(['open', yzm_image])
-    elif user_platform == 'Linux':
-        os.subprocess.call(['xdg-open', yzm_image])
-    else:
-        os.startfile(yzm_image)
-    B1["text"] = "点击重新获取验证码"
+    # user_platform = platform.system()
+    # yzm_image = 'yzmImage.bmp'
+    # if user_platform == 'Darwin':
+    #     os.subprocess.call(['open', yzm_image])
+    # elif user_platform == 'Linux':
+    #     os.subprocess.call(['xdg-open', yzm_image])
+    # else:
+    #     os.startfile(yzm_image)
+    yzmStrVar.set("YJdk")
+    B1["text"] = "获取成功"
 
 
 def start_report():
@@ -74,7 +74,7 @@ def start_report():
         # 首先读取用户输入的验证码
         yzm = E1.get()
         if yzm == "":
-            showinfo('提示', '请获取并输入验证码')
+            showinfo('提示', '请先获取验证码，获取后随便输入几个字符即可')
             return
         # 封装POST请求头
         http_headers = {
@@ -144,12 +144,15 @@ def start_report():
         cfgData["wtOR_3"] += cfgData["sF21650_10"]
         #  URL加密信息
         # data_encoding_arr = ['sF21648_2', 'sF21648_4', 'sF21648_6', 'sF21649_2',
-        #                      'sF21650_2', 'sF21650_3', 'sF21650_4', 'sF21650_10',
-        #                      'wtOR_1', 'wtOR_2', 'wtOR_3']
-        # for dataIdx in data_encoding_arr:
-        #     cfgData[dataIdx] = quote(cfgData[dataIdx].encode("gb2312"))
-        cfg_data_text = urlencode(cfgData, encoding='gb2312')
-        print("cfg_data_text: ", cfg_data_text)
+        #                      'sF21650_2', 'sF21650_3', 'sF21650_4', 'sF21650_10']
+        data_encoding_arr = ['wtOR_1', 'wtOR_2', 'wtOR_3']
+        for dataIdx in data_encoding_arr:
+            # cfgData[dataIdx] = quote(cfgData[dataIdx].encode("gb2312"))
+            cfgData[dataIdx] = quote(cfgData[dataIdx].encode("gb2312"))
+
+        # 直接加密信息
+        # cfg_data_text = urlencode(cfgData, encoding='gb2312')
+        print("cfg_data_text: ", cfgData)
         # 自动注入完成
         http_headers = {
             'Accept': 'text/html, application/xhtml+xml, application/xml; q=0.9, */*; q=0.8',
@@ -164,7 +167,7 @@ def start_report():
         }
         # ssion.cookies['refreshCT'] = 'UserName=' + cfgData['UTp'] + '%5F' + cfgData['ObjId']
         # print("refreshCT: ", 'UserName=' + cfgData['UTp'] + '%5F' + cfgData['ObjId'])
-        response = ssion.post("http://jszx-jxpt.cuit.edu.cn/Jxgl/Xs/netks/editSjRs.asp", data=cfg_data_text,
+        response = ssion.post("http://jszx-jxpt.cuit.edu.cn/Jxgl/Xs/netks/editSjRs.asp", data=cfgData,
                               headers=http_headers)
         info = find_by_reg('window\.(.+?)\(\"提交打卡成功！\"\);', response.content.decode("gb2312"))
         if info == "alert":
@@ -184,13 +187,14 @@ def start_report():
 # 2.3 展示验证码输入界面
 root = Tk()
 root.title("cuit一键健康打卡")
+yzmStrVar = StringVar()
 Text1 = Label(root, text="CUIT一键健康打卡工具 BY：Chineek")
 Text2 = Label(root, text="*打卡前请您先配置setting.json文件", fg="red")
 
 B1 = Button(root, text="点击获取验证码", command=yzm_get)
 F = Frame(root, bg='white')
 L1 = Label(F, text="验证码")
-E1 = Entry(F, bd=5)
+E1 = Entry(F, textvariable=yzmStrVar, bd=5)
 B2 = Button(root, text="一键打卡", command=start_report, bg="green", fg="white")
 
 Text1.pack()
