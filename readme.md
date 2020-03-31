@@ -8,3 +8,6 @@
 ## 开发注意事项
 打包exe文件：
 `pyinstaller -F -w filename`
+
+## 作者
+1、chineek[https://github.com/chineek]
