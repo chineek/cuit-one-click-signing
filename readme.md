@@ -3,7 +3,7 @@
 
 ## 使用分两步
 1. 配置config.json文件
-2. 运行AutomaticHealthReport.exe，点击获取验证码之后，选择一键打卡按钮。
+2. 运行AutomaticHealthReport.exe，选择一键打卡按钮。
 
 ## 开发注意事项
 打包exe文件：
