@@ -10,4 +10,4 @@
 `pyinstaller -F -w filename`
 
 ## 作者
-1、chineek[https://github.com/chineek]
+1、[chineek](https://github.com/chineek)
