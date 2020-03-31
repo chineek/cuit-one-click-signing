@@ -51,9 +51,9 @@ def yzm_get():
     http_headers['Referer'] = 'http://login.cuit.edu.cn/Login/xLogin/Login.asp'
     response = ssion.get("http://login.cuit.edu.cn/Login/xLogin/yzmDvCode.asp?" + urlencode(http_body),
                          headers=http_headers)
-    file = open('yzmImage.bmp', 'wb')
-    file.write(response.content)
-    file.close()
+    # file = open('yzmImage.bmp', 'wb')
+    # file.write(response.content)
+    # file.close()
 
     # 3. 使用操作系统打开验证码图片
     # user_platform = platform.system()
@@ -65,17 +65,19 @@ def yzm_get():
     # else:
     #     os.startfile(yzm_image)
     yzmStrVar.set("YJdk")
-    B1["text"] = "获取成功"
+    # B1["text"] = "获取成功"
 
 
 def start_report():
     try:
+        yzm_get()
         B2["text"] = "请求数据和运算中..."
         # 首先读取用户输入的验证码
-        yzm = E1.get()
-        if yzm == "":
-            showinfo('提示', '请先获取验证码，获取后随便输入几个字符即可')
-            return
+        # yzm = E1.get()
+        # if yzm == "":
+        #     showinfo('提示', '请先获取验证码，获取后随便输入几个字符即可')
+        #     return
+        yzm = "YJdk"
         # 封装POST请求头
         http_headers = {
             'Accept': 'text/html, application/xhtml+xml, application/xml; q=0.9, */*; q=0.8',
@@ -190,19 +192,19 @@ root.title("cuit一键健康打卡")
 yzmStrVar = StringVar()
 Text1 = Label(root, text="CUIT一键健康打卡工具 BY：Chineek")
 Text2 = Label(root, text="*打卡前请您先配置setting.json文件", fg="red")
-
-B1 = Button(root, text="点击获取验证码", command=yzm_get)
-F = Frame(root, bg='white')
-L1 = Label(F, text="验证码")
-E1 = Entry(F, textvariable=yzmStrVar, bd=5)
+#
+# B1 = Button(root, text="点击获取验证码", command=yzm_get)
+# F = Frame(root, bg='white')
+# L1 = Label(F, text="验证码")
+# E1 = Entry(F, textvariable=yzmStrVar, bd=5)
 B2 = Button(root, text="一键打卡", command=start_report, bg="green", fg="white")
 
 Text1.pack()
 Text2.pack()
-B1.pack(pady=10)
-F.pack(pady=5)
-L1.pack(side=LEFT)
-E1.pack(side=RIGHT)
+# B1.pack(pady=10)
+# F.pack(pady=5)
+# L1.pack(side=LEFT)
+# E1.pack(side=RIGHT)
 B2.pack(pady=10, padx=10, fill=X)
 
 root.mainloop()
