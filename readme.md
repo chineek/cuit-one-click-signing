@@ -9,5 +9,8 @@
 打包exe文件：
 `pyinstaller -F -w filename`
 
+## 版本更新说明
+v1.0 完成了一键打卡首版，暂不支持定时任务（求小伙伴完善），暂不支持中文输入（中文处请留白）
+
 ## 作者
 1、[chineek](https://github.com/chineek)
